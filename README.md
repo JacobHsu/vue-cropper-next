@@ -20,6 +20,10 @@
 
 - [https://vue-cropper-next.vercel.app/](https://vue-cropper-next.vercel.app/)
 
+## 教學文件
+
+- [從零開始教學](https://jacobhsu.github.io/vue-cropper-next/)
+
 ## 安裝
 
 推薦使用 pnpm：

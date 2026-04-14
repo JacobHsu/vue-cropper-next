@@ -6,7 +6,7 @@
     <div class="at-component__code" v-show="isShow">
       <slot name="sourceCode"></slot>
     </div>
-    <a class="at-component__code-toggle" @click="isShow = !isShow">{{ isShow ? '隐藏代码' : '显示代码' }}</a>
+    <a class="at-component__code-toggle" @click="isShow = !isShow">{{ isShow ? '隱藏程式碼' : '顯示程式碼' }}</a>
   </div>
 </template>
 

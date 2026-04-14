@@ -32,37 +32,37 @@ import cropperLoading from './loading'
 import './style/index.scss'
 
 interface InterfaceVueCropperProps {
-  // 图片地址
+  // 圖片地址
   img?: string;
-  // 外层容器宽高
+  // 外層容器寬高
   wrapper?: InterfaceLayout;
-  // 截图框大小
+  // 截圖框大小
   cropLayout?: InterfaceLayoutInput;
-  // 主题色
+  // 主題色
   color?: string;
-  // 滤镜函数
+  // 濾鏡函數
   filter?: ((canvas: HTMLCanvasElement) => HTMLCanvasElement) | null;
-  // 输出格式
+  // 輸出格式
   outputType?: string;
-  // 输出质量
+  // 輸出品質
   outputSize?: number;
-  // 高清导出
+  // 高清導出
   full?: boolean;
   original?: boolean;
   maxSideLength?: number;
-  // 布局方式
+  // 佈局方式
   mode?: keyof InterfaceModeHandle;
-  // 截图框的颜色
+  // 截圖框的顏色
   cropColor?: string;
-  // 默认旋转角度
+  // 預設旋轉角度
   defaultRotate?: number;
-  // 截图框是否限制图片里面
+  // 截圖框是否限制圖片在裡面
   centerBox?: boolean;
-  // 图片不能小于外层容易
+  // 圖片不能小於外層容器
   centerWrapper?: boolean;
-  // 图片限制在截图框内时的回弹时长
+  // 圖片限制在截圖框內時的回彈時長
   centerBoxDelay?: number;
-  // 图片限制在容器内时的回弹时长
+  // 圖片限制在容器內時的回彈時長
   centerWrapperDelay?: number;
 }
 const props = withDefaults(defineProps<InterfaceVueCropperProps>(), {
@@ -71,7 +71,7 @@ const props = withDefaults(defineProps<InterfaceVueCropperProps>(), {
     width: 300,
     height: 300,
   }),
-    // 截图框的大小
+    // 截圖框的大小
   cropLayout: () => ({
     width: 200,
     height: 200,
@@ -91,7 +91,7 @@ const props = withDefaults(defineProps<InterfaceVueCropperProps>(), {
   centerBoxDelay: BOUNDARY_DURATION,
   centerWrapperDelay: BOUNDARY_DURATION,
 })
-// 组件处理
+// 元件處理
 const cropperRef = ref()
 const cropperImg = ref()
 const cropperBox = ref()
@@ -101,56 +101,56 @@ const emit = defineEmits<{
   (e: 'real-time', payload: InterfaceRealTimePreview): void
   (e: 'realTime', payload: InterfaceRealTimePreview): void
 }>()
-// 图片加载loading
+// 圖片載入 loading
 const imgLoading = ref(false)
 
-// 真实图片渲染地址
+// 真實圖片渲染位址
 const imgs = ref('')
 
-// 绘制图片的canvas
+// 繪製圖片的 canvas
 let canvas: HTMLCanvasElement | null = null
 
 const LayoutContainer = reactive({
-  // 图片真实宽高
+  // 圖片真實寬高
   imgLayout: {
     width: 0,
     height: 0,
   },
-  // 外层容器宽高
+  // 外層容器寬高
   wrapLayout: {
     width: 0,
     height: 0,
   },
-  // 图片属性 包含当前坐标轴和缩放
+  // 圖片屬性，包含當前座標軸和縮放
   imgAxis: {
     x: 0,
     y: 0,
     scale: 0,
     rotate: 0,
   },
-  // 图片css 转化之后的展示效果
+  // 圖片 CSS 轉化之後的展示效果
   imgExhibitionStyle: {
     width: '',
     height: '',
     transform: '',
   },
-  // 截图框的坐标
+  // 截圖框的座標
   cropAxis: {
     x: 0,
     y: 0,
   },
-  // 截图框的样式， 包含外层和里面
+  // 截圖框的樣式，包含外層和裡面
   cropExhibitionStyle: {
     div: {},
     img: {},
   }
 })
 
-// 拖拽
+// 拖曳
 const isDrag = ref(false)
 
-// 裁剪过程中的一些状态
-// 处于生成了截图的状态
+// 裁剪過程中的一些狀態
+// 處於生成截圖的狀態
 const cropping = ref(true)
 
 let cropImg: TouchEvent | null = null
@@ -159,10 +159,10 @@ let cropBox: TouchEvent | null = null
 
 const setWaitFunc = ref<ReturnType<typeof window.setTimeout> | null>(null)
 
-// 图片是否处于双指操作状态，禁止截图框拖动
+// 圖片是否處於雙指操作狀態，禁止截圖框拖動
 const isImgTouchScale = ref(false)
 
-// 处理 props
+// 處理 props
 const {
   img,
   filter,
@@ -434,7 +434,7 @@ const dragend = (e: Event) => {
   isDrag.value = false
 }
 
-// 检查图片, 修改图片为正确角度
+// 檢查圖片，修改圖片為正確角度
 const checkedImg = async (url: string) => {
   imgLoading.value = true
   imgs.value = ''
@@ -444,17 +444,17 @@ const checkedImg = async (url: string) => {
     img = await loadImg(url)
     imgLoadEmit({
       type: 'success',
-      message: '图片加载成功',
+      message: '圖片載入成功',
     })
   } catch (error) {
     imgLoadEmit({
       type: 'error',
-      message: `图片加载失败${error}`,
+      message: `圖片載入失敗${error}`,
     })
     imgLoading.value = false
     return false
   }
-  // 图片加载成功之后的操作 获取图片旋转角度
+  // 圖片載入成功之後的操作，獲取圖片旋轉角度
   let result = {
     orientation: -1,
   }
@@ -465,7 +465,7 @@ const checkedImg = async (url: string) => {
   }
   let orientation = result.orientation || -1
   orientation = checkOrientationImage(orientation) as number
-  
+
   let newCanvas: HTMLCanvasElement = document.createElement('canvas')
   try {
     newCanvas = await resetImg(img, newCanvas, orientation) ?? newCanvas
@@ -476,7 +476,7 @@ const checkedImg = async (url: string) => {
   renderFilter()
 }
 
-// 滤镜渲染
+// 濾鏡渲染
 const renderFilter = () => {
   if (filter.value) {
     let newCanvas = canvas as HTMLCanvasElement
@@ -486,7 +486,7 @@ const renderFilter = () => {
   createImg()
 }
 
-// 生成新图片
+// 生成新圖片
 const createImg = () => {
   if (!canvas) {
     return
@@ -512,7 +512,7 @@ const createImg = () => {
           LayoutContainer.imgExhibitionStyle = style.imgExhibitionStyle
           LayoutContainer.imgAxis = style.imgAxis
           imgs.value = url
-          // 渲染截图框
+          // 渲染截圖框
           if (cropping.value) {
             renderCrop()
           }
@@ -533,19 +533,19 @@ const createImg = () => {
   }
 }
 
-// 渲染图片布局
+// 渲染圖片佈局
 const renderImgLayout = async (url: string): Promise<number> => {
   let img: HTMLImageElement
   try {
     img = await loadImg(url)
     imgLoadEmit({
       type: 'success',
-      message: '图片加载成功',
+      message: '圖片載入成功',
     })
   } catch (error) {
     imgLoadEmit({
       type: 'error',
-      message: `图片加载失败${error}`,
+      message: `圖片載入失敗${error}`,
     })
     imgLoading.value = false
     return 1;
@@ -571,7 +571,7 @@ const renderImgLayout = async (url: string): Promise<number> => {
   return createImgStyle({ ...LayoutContainer.imgLayout }, wrapper, mode.value)
 }
 
-// 鼠标移入截图组件
+// 滑鼠移入截圖元件
 const mouseInCropper = () => {
   if (isIE) {
     window.addEventListener(supportWheel, mouseScroll)
@@ -582,13 +582,13 @@ const mouseInCropper = () => {
   }
 }
 
-// 鼠标移出截图组件
+// 滑鼠移出截圖元件
 const mouseOutCropper = () => {
   // console.log('remove')
   window.removeEventListener(supportWheel, mouseScroll)
 }
 
-// 鼠标滚动事件
+// 滑鼠滾動事件
 const mouseScroll = (e: Event) => {
   e.preventDefault()
   const scale = changeImgSize(e, LayoutContainer.imgAxis.scale, LayoutContainer.imgLayout)
@@ -601,7 +601,7 @@ onMounted(() => {
   } else {
     imgs.value = ''
   }
-  // 添加拖拽上传
+  // 添加拖曳上傳
   const dom = cropperRef.value
   dom.addEventListener('dragover', dragover, false)
   dom.addEventListener('dragend', dragend, false)
@@ -620,9 +620,9 @@ onUnmounted(() => {
   unbindMoveCrop()
 })
 
-// 修改图片缩放比例函数
+// 修改圖片縮放比例函數
 const setScale = (scale: number, keep: boolean = false) => {
-  // 保持当前坐标比例
+  // 保持當前座標比例
   const axis = {
     x: LayoutContainer.imgAxis.x,
     y: LayoutContainer.imgAxis.y,
@@ -644,7 +644,7 @@ const setScale = (scale: number, keep: boolean = false) => {
   LayoutContainer.imgExhibitionStyle = style.imgExhibitionStyle
   LayoutContainer.imgAxis = style.imgAxis
   queueRealTimeEmit()
-  // 设置完成图片大小后去校验 图片的坐标轴
+  // 設置完成圖片大小後去校驗圖片的座標軸
   if (setWaitFunc.value !== null) {
     clearTimeout(setWaitFunc.value)
   }
@@ -654,19 +654,19 @@ const setScale = (scale: number, keep: boolean = false) => {
   }, boundaryDuration)
 }
 
-// 移动图片
+// 移動圖片
 const moveImg = (message: InterfaceMessageEvent) => {
-  // 拿到的是变化之后的坐标轴
+  // 拿到的是變化之後的座標軸
   if (message.change) {
     // console.log(message.change)
-    // 去更改图片的位置
+    // 去更改圖片的位置
     const axis = {
       x: message.change.x + LayoutContainer.imgAxis.x,
       y: message.change.y + LayoutContainer.imgAxis.y,
     }
 
     if (centerBox.value) {
-      // 这个时候去校验下是否图片已经被拖拽出了不可限制区域，添加回弹
+      // 這個時候去校驗下是否圖片已經被拖曳出了不可限制區域，添加回彈
       const crossing = detectionBoundary(
         { ...LayoutContainer.cropAxis },
         { ...effectiveCropLayoutStyle.value },
@@ -675,7 +675,7 @@ const moveImg = (message: InterfaceMessageEvent) => {
       )
 
       if (crossing.landscape !== '' || crossing.portrait !== '') {
-        // 施加拖动阻力 ？是否需要添加越来越大的阻力
+        // 施加拖曳阻力，是否需要添加越來越大的阻力
         axis.x = LayoutContainer.imgAxis.x + message.change.x * RESISTANCE
         axis.y = LayoutContainer.imgAxis.y + message.change.y * RESISTANCE
       }
@@ -685,7 +685,7 @@ const moveImg = (message: InterfaceMessageEvent) => {
   }
 }
 
-// 设置图片坐标
+// 設置圖片座標
 const setImgAxis = (axis: InterfaceAxis) => {
   const style = translateStyle(
     {
@@ -701,7 +701,7 @@ const setImgAxis = (axis: InterfaceAxis) => {
   queueRealTimeEmit()
 }
 
-// 回弹图片
+// 回彈圖片
 const reboundImg = (): void => {
   isImgTouchScale.value = false
   if (!centerBox.value && !centerWrapper.value) {
@@ -709,7 +709,7 @@ const reboundImg = (): void => {
   }
   const boundaryDuration = getBoundaryDuration()
   let crossing
-  // 这个时候去校验下是否图片已经被拖拽出了不可限制区域，添加回弹
+  // 這個時候去校驗下是否圖片已經被拖曳出了不可限制區域，添加回彈
   if (centerBox.value) {
     crossing = detectionBoundary(
       { ...LayoutContainer.cropAxis },
@@ -725,7 +725,7 @@ const reboundImg = (): void => {
       { ...LayoutContainer.imgLayout },
     )
   }
-  
+
   if (LayoutContainer.imgAxis.scale < crossing.scale) {
     setAnimation(LayoutContainer.imgAxis.scale, crossing.scale, boundaryDuration, value => {
       setScale(value, true)
@@ -770,7 +770,7 @@ const reboundImg = (): void => {
     })
   }
 
-  // console.log('可以开始校验位置，回弹了')
+  // console.log('可以開始校驗位置，回彈了')
   queueRealTimeEmit()
 }
 
@@ -783,12 +783,12 @@ const moveScale = (message: InterfaceMessageEvent)=> {
   }
 }
 
-// 绑定拖拽
+// 綁定拖曳
 const bindMoveImg = (): void => {
   unbindMoveImg()
   const domImg = cropperImg.value
   cropImg = new TouchEvent(domImg)
-  // 图片拖拽绑定
+  // 圖片拖曳綁定
   cropImg.on('down-to-move', moveImg)
   cropImg.on('down-to-scale', moveScale)
   cropImg.on('up', reboundImg)
@@ -824,7 +824,7 @@ const unbindMoveCrop = (): void => {
   }
 }
 
-// 设置旋转角度
+// 設置旋轉角度
 const setRotate = (rotate: number, shouldRebound: boolean = true) => {
   const { x, y, scale } = LayoutContainer.imgAxis
   const axis = { x, y }
@@ -841,15 +841,15 @@ const setRotate = (rotate: number, shouldRebound: boolean = true) => {
   LayoutContainer.imgAxis = style.imgAxis
   queueRealTimeEmit()
 
-  // 旋转会改变图片的实际包围范围，需要立即重新做边界校验。
+  // 旋轉會改變圖片的實際包圍範圍，需要立即重新做邊界校驗。
   if (shouldRebound && imgs.value) {
     reboundImg()
   }
 }
 
-// 获取截图信息
+// 獲取截圖資訊
 const getCropData = (type: 'base64' | 'blob' = 'base64') => {
-  // 组合数据
+  // 組合資料
   const obj = {
     type,
     outputType: outputType.value,
@@ -884,9 +884,9 @@ const getCropBlob = () => {
   }) as Promise<Blob>
 }
 
-// 渲染截图框
+// 渲染截圖框
 const renderCrop = (axis?: InterfaceAxis): void => {
-  // 如果没有指定截图框的容器位置， 默认截图框为居中布局
+  // 如果沒有指定截圖框的容器位置，預設截圖框為居中佈局
   const { width, height } = LayoutContainer.wrapLayout
   let cropW = cropLayoutStyle.value.width
   let cropH = cropLayoutStyle.value.height
@@ -900,7 +900,7 @@ const renderCrop = (axis?: InterfaceAxis): void => {
     x: (width - cropW) / 2,
     y: (height - cropH) / 2,
   }
-  // 校验截图框位置
+  // 校驗截圖框位置
   if (axis) {
     checkedCrop(axis)
   } else {
@@ -908,10 +908,10 @@ const renderCrop = (axis?: InterfaceAxis): void => {
   }
 }
 
-// 移动截图框
+// 移動截圖框
 const moveCrop = (message: InterfaceMessageEvent) => {
   if (isImgTouchScale.value) return;
-  // 拿到的是变化之后的坐标轴
+  // 拿到的是變化之後的座標軸
   if (message.change) {
     const axis = {
       x: message.change.x + LayoutContainer.cropAxis.x,
@@ -921,9 +921,9 @@ const moveCrop = (message: InterfaceMessageEvent) => {
   }
 }
 
-// 检查截图框位置
+// 檢查截圖框位置
 const checkedCrop = (axis: InterfaceAxis) => {
-  // 截图了默认不允许超过容器
+  // 截圖後預設不允許超過容器
   const maxLeft = 0
   const maxTop = 0
   const cropWidth = effectiveCropLayoutStyle.value.width
@@ -951,9 +951,9 @@ const checkedCrop = (axis: InterfaceAxis) => {
   queueRealTimeEmit()
 }
 
-// 回弹截图框, 如果校验不通过那么截图框需要在指定时间弹回正常的位置
+// 回彈截圖框，如果校驗不通過那麼截圖框需要在指定時間彈回正常的位置
 
-// 清除截图框
+// 清除截圖框
 const clearCrop = () => {
   LayoutContainer.cropAxis = {
     x: 0,
@@ -974,7 +974,7 @@ const rotateClear = () => {
   setRotate(0)
 }
 
-// 计算拖拽的 class 名
+// 計算拖曳的 class 名
 const computedClassDrag = (): string => {
   const className = ['cropper-drag-box']
   if (cropping.value) {
@@ -983,7 +983,7 @@ const computedClassDrag = (): string => {
   return className.join(' ')
 }
 
-// 计算截图框外层样式
+// 計算截圖框外層樣式
 const getCropBoxStyle = (): InterfaceTransformStyle => {
   const style = {
     width: `${effectiveCropLayoutStyle.value.width}px`,
@@ -994,10 +994,10 @@ const getCropBoxStyle = (): InterfaceTransformStyle => {
   return style
 }
 
-// 计算截图框图片的样式
+// 計算截圖框圖片的樣式
 const getCropImgStyle = (): InterfaceTransformStyle => {
   const scale = LayoutContainer.imgAxis.scale
-  // 图片放大所带来的扩张坐标补充  加   图片坐标和截图坐标的差值
+  // 圖片放大所帶來的擴張座標補充，加上圖片座標和截圖座標的差值
   const x =
     ((LayoutContainer.imgLayout.width * (scale - 1)) / 2 + (LayoutContainer.imgAxis.x - LayoutContainer.cropAxis.x)) / scale
 
@@ -1053,7 +1053,7 @@ defineExpose({
     </section>
     <section v-if="isDrag" class="drag">
       <slot name="drag">
-        <p>拖动图片到此</p>
+        <p>拖曳圖片到此</p>
       </slot>
     </section>
     <cropperLoading :is-visible="imgLoading">

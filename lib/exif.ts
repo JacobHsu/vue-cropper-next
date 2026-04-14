@@ -13,9 +13,9 @@ Exif.getData = (img: HTMLImageElement) =>
       })
   })
 
-// 这里的获取exif要将图片转ArrayBuffer对象，这里假设获取了图片的baes64
-// 步骤一
-// base64转ArrayBuffer对象
+// 這裡的獲取 exif 要將圖片轉 ArrayBuffer 物件，這裡假設獲取了圖片的 base64
+// 步驟一
+// base64 轉 ArrayBuffer 物件
 function getImageData(img: HTMLImageElement) {
   let data = null
   return new Promise((resolve, reject) => {
@@ -78,8 +78,8 @@ function base64ToArrayBuffer(base64: string) {
   }
   return buffer
 }
-// 步骤二，Unicode码转字符串
-// ArrayBuffer对象 Unicode码转字符串
+// 步驟二，Unicode 碼轉字串
+// ArrayBuffer 物件 Unicode 碼轉字串
 function getStringFromCharCode(dataView: any, start: number, length: number) {
   var str = ''
   var i
@@ -89,7 +89,7 @@ function getStringFromCharCode(dataView: any, start: number, length: number) {
   return str
 }
 
-// 步骤三，获取jpg图片的exif的角度（在ios体现最明显）
+// 步驟三，獲取 jpg 圖片的 exif 角度（在 iOS 體現最明顯）
 function getOrientation(arrayBuffer: ArrayBuffer) {
   var dataView = new DataView(arrayBuffer)
   var length = dataView.byteLength

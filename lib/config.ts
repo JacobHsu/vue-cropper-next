@@ -1,11 +1,11 @@
 /**
  * 配置表
  * 渲染控制
- * 全局参数
+ * 全域參數
  */
 
-// 阻力系数， 即超过限制区域拖拽时的阻力
+// 阻力係數，即超過限制區域拖曳時的阻力
 export const RESISTANCE: number = 0.2
 
-// 回弹的时间 ms
+// 回彈的時間 ms
 export const BOUNDARY_DURATION = 100
