@@ -28,12 +28,12 @@ const labels = computed(() =>
         ok: 'OK',
       }
     : {
-        exportBase64: '导出 base64',
-        exportBlob: '导出 Blob',
-        reset: '清空结果',
-        displaySize: '展示尺寸',
-        exportPixels: '导出像素',
-        fileSize: '文件大小',
+        exportBase64: '匯出 base64',
+        exportBlob: '匯出 Blob',
+        reset: '清空結果',
+        displaySize: '顯示尺寸',
+        exportPixels: '匯出像素',
+        fileSize: '檔案大小',
         pixelRatio: '像素倍率',
         ok: '完成',
       },

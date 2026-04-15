@@ -18,7 +18,7 @@ const images = computed(() => (props.images?.length ? props.images : imageList))
 watchEffect(() => {
   if (props.modelValue) return
   if (!images.value.length) return
-  // 随机选择一张图片
+  // 隨機選擇一張圖片
   emit('update:modelValue', images.value[Math.floor(Math.random() * images.value.length)])
 })
 
@@ -34,8 +34,8 @@ const labels = computed(() =>
         random: 'Random',
       }
     : {
-        title: '图片',
-        random: '随机',
+        title: '圖片',
+        random: '隨機',
       },
 )
 
